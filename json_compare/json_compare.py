@@ -162,8 +162,11 @@ def _are_same(expected, actual, ignore_value_of_keys, ignore_missing_keys=False,
     return False, Stack().append(StackItem('Unhandled Type: {0}'.format(type(expected)), expected, actual))
 
 
-def are_same(original_a, original_b, ignore_list_order_recursively=False, ignore_value_of_keys=[], rel_tolerance=1,
+def are_same(original_a, original_b, ignore_list_order_recursively=False, ignore_value_of_keys=None, rel_tolerance=1,
              abs_tolerance=1, compare_ints_floats=False):
+    if ignore_value_of_keys is None:
+        ignore_value_of_keys = []
+
     if ignore_list_order_recursively:
         a = _to_ordered_dict(_bottom_up_sort(original_a))
         b = _to_ordered_dict(_bottom_up_sort(original_b))
@@ -173,8 +176,11 @@ def are_same(original_a, original_b, ignore_list_order_recursively=False, ignore
     return _are_same(a, b, ignore_value_of_keys, False, rel_tolerance, abs_tolerance, compare_ints_floats)
 
 
-def contains(expected_original, actual_original, ignore_list_order_recursively=False, ignore_value_of_keys=[],
+def contains(expected_original, actual_original, ignore_list_order_recursively=False, ignore_value_of_keys=None,
              compare_ints_floats=False):
+    if ignore_value_of_keys is None:
+        ignore_value_of_keys = []
+
     if ignore_list_order_recursively:
         actual = _to_ordered_dict(_bottom_up_sort(actual_original))
         expected = _to_ordered_dict(_bottom_up_sort(expected_original))
@@ -184,8 +190,11 @@ def contains(expected_original, actual_original, ignore_list_order_recursively=F
     return _are_same(expected, actual, ignore_value_of_keys, True, compare_ints_floats=compare_ints_floats)
 
 
-def json_are_same(a, b, ignore_list_order_recursively=False, ignore_value_of_keys=[], rel_tolerance=1, abs_tolerance=1,
+def json_are_same(a, b, ignore_list_order_recursively=False, ignore_value_of_keys=None, rel_tolerance=1, abs_tolerance=1,
                   compare_ints_floats=False):
+    if ignore_value_of_keys is None:
+        ignore_value_of_keys = []
+
     return are_same(rapidjson.loads(a), rapidjson.loads(b), ignore_list_order_recursively, ignore_value_of_keys,
                     rel_tolerance,
                     abs_tolerance, compare_ints_floats)
